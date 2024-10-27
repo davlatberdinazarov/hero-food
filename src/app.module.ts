@@ -10,6 +10,7 @@ import { RegionService } from './region/region.service';
 import { RegionController } from './region/region.controller';
 import { RegionModule } from './region/region.module';
 import { CityModule } from './city/city.module';
+import { CategoryModule } from './category/category.module';
 
 
 @Module({
@@ -33,7 +34,8 @@ import { CityModule } from './city/city.module';
     UsersModule,
     AuthModule,
     RegionModule,
-    CityModule
+    CityModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService],
