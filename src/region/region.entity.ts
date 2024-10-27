@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { RegionName } from './region-name.enum';
 import { City } from 'src/city/entities/city.entity';
+import { FoodEstablishment } from 'src/food-establishment/entities/food-establishment.entity';
 
 @Entity('regions')
 export class Region {
@@ -17,4 +18,7 @@ export class Region {
 
   @OneToMany(() => City, (city) => city.region, { cascade: true })
   cities: City[];
+
+  @OneToMany(() => FoodEstablishment, (foodEstablishment) => foodEstablishment.region)
+  foodEstablishments: FoodEstablishment[];
 }

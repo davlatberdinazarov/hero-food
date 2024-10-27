@@ -1,7 +1,8 @@
 // src/city/city.entity.ts
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Region } from 'src/region/region.entity';
 import { CitySize } from '../city-size.enum';
+import { FoodEstablishment } from 'src/food-establishment/entities/food-establishment.entity';
 
 @Entity()
 export class City {
@@ -19,4 +20,7 @@ export class City {
 
   @ManyToOne(() => Region, (region) => region.cities)
   region: Region;
+
+  @OneToMany(() => FoodEstablishment, (foodEstablishment) => foodEstablishment.city)
+  foodEstablishments: FoodEstablishment[];
 }

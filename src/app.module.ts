@@ -11,6 +11,7 @@ import { RegionController } from './region/region.controller';
 import { RegionModule } from './region/region.module';
 import { CityModule } from './city/city.module';
 import { CategoryModule } from './category/category.module';
+import { FoodEstablishmentModule } from './food-establishment/food-establishment.module';
 
 
 @Module({
@@ -35,7 +36,8 @@ import { CategoryModule } from './category/category.module';
     AuthModule,
     RegionModule,
     CityModule,
-    CategoryModule
+    CategoryModule,
+    FoodEstablishmentModule
   ],
   controllers: [AppController],
   providers: [AppService],
