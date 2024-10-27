@@ -81,4 +81,29 @@ export class UsersService implements OnModuleInit {
       throw new InternalServerErrorException('Failed to update user details');
     }
   }
+
+  async delete(id: number, currentUserRole: UserRole) {
+    const user = await this.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    await this.userRepository.delete(id);
+    return { deleted: true };
+  }
+
+  // ID bo'yicha foydalanuvchini topish
+  async findOne(id: number) {
+    // ID orqali foydalanuvchini tekshirish
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    // Agar foydalanuvchi topilmasa, xato qaytarish
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
 }

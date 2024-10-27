@@ -6,6 +6,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { RegionService } from './region/region.service';
+import { RegionController } from './region/region.controller';
+import { RegionModule } from './region/region.module';
+import { CityModule } from './city/city.module';
 
 
 @Module({
@@ -27,7 +31,9 @@ import { AuthModule } from './auth/auth.module';
       }) 
     }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    RegionModule,
+    CityModule
   ],
   controllers: [AppController],
   providers: [AppService],
