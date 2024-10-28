@@ -1,5 +1,5 @@
 // src/food-establishment/food-establishment.controller.ts
-import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Query } from '@nestjs/common';
 import { FoodEstablishmentService } from './food-establishment.service';
 import { CreateFoodEstablishmentDto } from './dto/create-food-establishment.dto';
 import { UpdateFoodEstablishmentDto } from './dto/update-food-establishment.dto';
@@ -21,8 +21,16 @@ export class FoodEstablishmentController {
   }
 
   @Get('all')
-  async findAll() {
-    return await this.foodEstablishmentService.findAll();
+  async findAll(
+    @Query('regionId') regionId?: number,
+    @Query('cityId') cityId?: number,
+    @Query('categoryId') categoryId?: number,
+  ) {
+    return await this.foodEstablishmentService.findAll(
+      regionId ? +regionId : undefined,
+      cityId ? +cityId : undefined,
+      categoryId ? +categoryId : undefined,
+    );
   }
 
   @Get(':id')

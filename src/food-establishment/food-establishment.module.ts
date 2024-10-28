@@ -7,9 +7,10 @@ import { City } from 'src/city/entities/city.entity';
 import { Region } from 'src/region/region.entity';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { Category } from 'src/category/entities/category.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FoodEstablishment, City, Region])],
+  imports: [TypeOrmModule.forFeature([FoodEstablishment, City, Region, Category])],
   controllers: [FoodEstablishmentController],
   providers: [
     FoodEstablishmentService,

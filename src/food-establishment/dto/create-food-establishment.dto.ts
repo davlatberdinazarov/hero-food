@@ -25,6 +25,9 @@ export class CreateFoodEstablishmentDto {
   sizeOfEstablishment: SizeOfEstablishment;
 
   @IsNotEmpty()
+  categoryId?: number;  // City ID maydoni
+
+  @IsNotEmpty()
   cityId?: number;  // City ID maydoni
 
   @IsNotEmpty()

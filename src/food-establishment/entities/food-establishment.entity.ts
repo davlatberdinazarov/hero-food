@@ -1,7 +1,9 @@
 // src/food-establishment/entities/food-establishment.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { City } from '../../city/entities/city.entity';
 import { Region } from '../../region/region.entity';
+import { Category } from 'src/category/entities/category.entity';
+import { Promotion } from 'src/promotion/entities/promotion.entity';
 
 export enum SizeOfEstablishment {
   SMALL = 'small',
@@ -41,9 +43,15 @@ export class FoodEstablishment {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
+  @ManyToOne(() => Category, (category) => category.foodEstablishments)
+  category: Category;
+
   @ManyToOne(() => City, (city) => city.foodEstablishments)
   city: City;
 
   @ManyToOne(() => Region, (region) => region.foodEstablishments)
   region: Region;
+
+  @OneToMany(() => Promotion, (promotion) => promotion.foodEstablishment)
+  promotions: Promotion[]; // `Promotion` bilan bog'lanish
 }

@@ -12,6 +12,7 @@ import { RegionModule } from './region/region.module';
 import { CityModule } from './city/city.module';
 import { CategoryModule } from './category/category.module';
 import { FoodEstablishmentModule } from './food-establishment/food-establishment.module';
+import { PromotionModule } from './promotion/promotion.module';
 
 
 @Module({
@@ -37,7 +38,8 @@ import { FoodEstablishmentModule } from './food-establishment/food-establishment
     RegionModule,
     CityModule,
     CategoryModule,
-    FoodEstablishmentModule
+    FoodEstablishmentModule,
+    PromotionModule
   ],
   controllers: [AppController],
   providers: [AppService],
