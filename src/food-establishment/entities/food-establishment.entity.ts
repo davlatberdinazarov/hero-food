@@ -6,6 +6,7 @@ import { Category } from 'src/category/entities/category.entity';
 import { Promotion } from 'src/promotion/entities/promotion.entity';
 import { MenuCategory } from 'src/menu-category/entities/menu-category.entity';
 import { Food } from 'src/food/entities/food.entity';
+import { Rating } from 'src/rating/entities/rating.entity';
 
 export enum SizeOfEstablishment {
   SMALL = 'small',
@@ -62,4 +63,7 @@ export class FoodEstablishment {
 
   @OneToMany(() => Food, (food) => food.foodEstablishment)
   foods: Food[];
+
+  @OneToMany(() => Rating, (rating) => rating.foodEstablishment)
+  ratings: Rating[];
 }

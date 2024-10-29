@@ -16,6 +16,7 @@ import { PromotionModule } from './promotion/promotion.module';
 import { ProfileModule } from './profile/profile.module';
 import { MenuCategoryModule } from './menu-category/menu-category.module';
 import { FoodModule } from './food/food.module';
+import { RatingModule } from './rating/rating.module';
 
 
 @Module({
@@ -45,7 +46,8 @@ import { FoodModule } from './food/food.module';
     PromotionModule,
     ProfileModule,
     MenuCategoryModule,
-    FoodModule
+    FoodModule,
+    RatingModule
   ],
   controllers: [AppController],
   providers: [AppService],

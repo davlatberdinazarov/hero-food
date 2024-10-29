@@ -1,3 +1,4 @@
+import { Rating } from 'src/rating/entities/rating.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn } from 'typeorm';
 
 export enum UserRole {
@@ -29,6 +30,10 @@ export class User {
 
   @Column({ nullable: true })
   image: string;
+
+
+  @OneToMany(() => Rating, (rating) => rating.user)
+  ratings: Rating[];
 
   @CreateDateColumn()
   createdAt: Date;
