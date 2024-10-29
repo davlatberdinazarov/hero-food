@@ -1,5 +1,5 @@
 // src/promotion/promotion.controller.ts
-import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { PromotionService } from './promotion.service';
 import { CreatePromotionDto } from './dto/create-promotion.dto';
 import { UpdatePromotionDto } from './dto/update-promotion.dto';
@@ -7,6 +7,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { UserRole } from 'src/users/entities/user.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('promotions')
 export class PromotionController {
@@ -15,8 +16,9 @@ export class PromotionController {
   @Post('create')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.SUPERADMIN)
-  async create(@Body() createPromotionDto: CreatePromotionDto) {
-    return await this.promotionService.create(createPromotionDto);
+  @UseInterceptors(FileInterceptor('banner')) // Specify the field name for the file
+  async create(@Body() createPromotionDto: CreatePromotionDto, @UploadedFile() file: Express.Multer.File) {
+    return await this.promotionService.create(createPromotionDto, file);
   }
 
   @Get('all')
@@ -38,7 +40,7 @@ export class PromotionController {
   @Roles(UserRole.SUPERADMIN)
   async update(@Param('id') id: number, @Body() updatePromotionDto: UpdatePromotionDto) {
     return await this.promotionService.update(id, updatePromotionDto);
-  }
+  } 
 
   @Delete('delete/:id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)

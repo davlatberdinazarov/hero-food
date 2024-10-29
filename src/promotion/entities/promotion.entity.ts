@@ -25,6 +25,9 @@ export class Promotion {
   @ManyToOne(() => FoodEstablishment, (foodEstablishment) => foodEstablishment.promotions)
   foodEstablishment: FoodEstablishment; // Aksiyani `FoodEstablishment` bilan bog'lash
 
+  @Column({ nullable: true }) // Make nullable true if it's not required
+  banner: string; // URL of the banner image
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 }

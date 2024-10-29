@@ -21,4 +21,7 @@ export class CreatePromotionDto {
 
   @IsNumber()
   foodEstablishmentId: number;
+
+  @IsString() // Add this line for the banner URL
+  banner?: string; // Optional, as it might be set later after upload
 }

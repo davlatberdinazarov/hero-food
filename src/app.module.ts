@@ -13,6 +13,9 @@ import { CityModule } from './city/city.module';
 import { CategoryModule } from './category/category.module';
 import { FoodEstablishmentModule } from './food-establishment/food-establishment.module';
 import { PromotionModule } from './promotion/promotion.module';
+import { ProfileModule } from './profile/profile.module';
+import { MenuCategoryModule } from './menu-category/menu-category.module';
+import { FoodModule } from './food/food.module';
 
 
 @Module({
@@ -39,7 +42,10 @@ import { PromotionModule } from './promotion/promotion.module';
     CityModule,
     CategoryModule,
     FoodEstablishmentModule,
-    PromotionModule
+    PromotionModule,
+    ProfileModule,
+    MenuCategoryModule,
+    FoodModule
   ],
   controllers: [AppController],
   providers: [AppService],

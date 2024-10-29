@@ -4,6 +4,8 @@ import { City } from '../../city/entities/city.entity';
 import { Region } from '../../region/region.entity';
 import { Category } from 'src/category/entities/category.entity';
 import { Promotion } from 'src/promotion/entities/promotion.entity';
+import { MenuCategory } from 'src/menu-category/entities/menu-category.entity';
+import { Food } from 'src/food/entities/food.entity';
 
 export enum SizeOfEstablishment {
   SMALL = 'small',
@@ -19,7 +21,7 @@ export class FoodEstablishment {
   @Column({ unique: true })
   title: string;
 
-  @Column()
+  @Column({ nullable: true }) // Make the banner field nullable
   banner: string; // Banner URL
 
   @Column()
@@ -54,4 +56,10 @@ export class FoodEstablishment {
 
   @OneToMany(() => Promotion, (promotion) => promotion.foodEstablishment)
   promotions: Promotion[]; // `Promotion` bilan bog'lanish
+
+  @OneToMany(() => MenuCategory, (menuCategories) => menuCategories.foodEstablishment)
+  menuCategories: MenuCategory[]; // `Promotion` bilan bog'lanish
+
+  @OneToMany(() => Food, (food) => food.foodEstablishment)
+  foods: Food[];
 }

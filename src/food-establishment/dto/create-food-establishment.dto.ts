@@ -5,8 +5,9 @@ export class CreateFoodEstablishmentDto {
   @IsNotEmpty()
   title: string;
 
-  @IsNotEmpty()
-  banner: string;
+  @IsOptional()
+  @IsString()
+  banner?: string; // Fayl yo'li saqlanishi uchun optional maydon
 
   @IsNotEmpty()
   ownerFullName: string;

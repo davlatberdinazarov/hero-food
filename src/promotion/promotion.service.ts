@@ -6,6 +6,9 @@ import { Promotion } from './entities/promotion.entity';
 import { CreatePromotionDto } from './dto/create-promotion.dto';
 import { UpdatePromotionDto } from './dto/update-promotion.dto';
 import { FoodEstablishment } from '../food-establishment/entities/food-establishment.entity';
+import { v4 as uuidv4 } from 'uuid'; // For unique file naming
+import * as fs from 'fs'; // For file operations
+import * as path from 'path'; // For path operations
 
 @Injectable()
 export class PromotionService {
@@ -17,7 +20,7 @@ export class PromotionService {
     private readonly foodEstablishmentRepository: Repository<FoodEstablishment>, // Injecting FoodEstablishment repository
   ) {}
 
-  async create(createPromotionDto: CreatePromotionDto): Promise<Promotion> {
+  async create(createPromotionDto: CreatePromotionDto, file?: Express.Multer.File): Promise<Promotion> {
     const { foodEstablishmentId, ...promotionData } = createPromotionDto;
 
     // Check if the FoodEstablishment with the given ID exists
@@ -28,10 +31,22 @@ export class PromotionService {
       throw new NotFoundException('Food Establishment not found');
     }
 
+    let bannerUrl: string | null = null;
+    if (file) {
+      // Create a unique filename and save the file
+      const uniqueFileName = `${uuidv4()}-${file.originalname}`;
+      const uploadPath = path.join(__dirname, '..', '..', 'uploads', uniqueFileName); // Ensure this directory exists
+
+      // Save the file
+      fs.writeFileSync(uploadPath, file.buffer);
+      bannerUrl = uniqueFileName; // Store the file name or URL as needed
+    }
+
     // Create and save the promotion with the associated Food Establishment
     const promotion = this.promotionRepository.create({
       ...promotionData,
       foodEstablishment,
+      banner: bannerUrl, // Store the banner URL
     });
     return await this.promotionRepository.save(promotion);
   }
