@@ -5,9 +5,8 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { AuthModule } from './auth/auth.module';
-import { RegionService } from './region/region.service';
-import { RegionController } from './region/region.controller';
 import { RegionModule } from './region/region.module';
 import { CityModule } from './city/city.module';
 import { CategoryModule } from './category/category.module';
@@ -17,7 +16,6 @@ import { ProfileModule } from './profile/profile.module';
 import { MenuCategoryModule } from './menu-category/menu-category.module';
 import { FoodModule } from './food/food.module';
 import { RatingModule } from './rating/rating.module';
-
 
 @Module({
   imports: [
@@ -33,9 +31,12 @@ import { RatingModule } from './rating/rating.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [join(process.cwd(), 'dist/**/*.entity.js')],
-        // do NOT use synchronize: true in real projects
         synchronize: true,
-      }) 
+      })
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'), // uploads papkasiga yo‘l
+      serveRoot: '/uploads', // URL orqali kirish
     }),
     UsersModule,
     AuthModule,
@@ -47,7 +48,7 @@ import { RatingModule } from './rating/rating.module';
     ProfileModule,
     MenuCategoryModule,
     FoodModule,
-    RatingModule
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
