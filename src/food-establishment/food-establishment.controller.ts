@@ -76,14 +76,36 @@ export class FoodEstablishmentController {
   @Put('update/:id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.SUPERADMIN)
+  @UseInterceptors(
+    FileInterceptor('banner', {
+      storage: diskStorage({
+        destination: './uploads/banners',
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+
+  
   async update(
     @Param('id') id: number,
     @Body() updateFoodEstablishmentDto: UpdateFoodEstablishmentDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return await this.foodEstablishmentService.update(
-      id,
-      updateFoodEstablishmentDto,
-    );
+    // Construct the updated data
+    const updatedData = {
+      ...updateFoodEstablishmentDto,
+    };
+
+    // If a new file is uploaded, update the banner URL
+    if (file) {
+      updatedData.banner = `/uploads/banners/${file.filename}`;
+    }
+
+    return await this.foodEstablishmentService.update(id, updatedData);
   }
 
   @Delete('delete/:id')
