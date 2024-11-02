@@ -51,14 +51,21 @@ export class PromotionService {
     return await this.promotionRepository.save(promotion);
   }
 
-  async findAll(
-    foodEstablishmentId?: number,
-  ): Promise<Promotion[]> {
+  async findAll(foodEstablishmentId?: number): Promise<Promotion[]> {
     const whereConditions: any = {};
-    
-    if (foodEstablishmentId) whereConditions.foodEstablishment = { id: foodEstablishmentId };
-    return await this.promotionRepository.find({ relations: ['foodEstablishment'] });
+  
+    // Agar foodEstablishmentId mavjud bo'lsa, filter sharti qo'shiladi
+    if (foodEstablishmentId) {
+      whereConditions.foodEstablishment = { id: foodEstablishmentId };
+    }
+  
+    // Filter sharti bilan promotionlarni topish
+    return await this.promotionRepository.find({
+      where: whereConditions,
+      relations: ['foodEstablishment'],
+    });
   }
+  
 
   async findById(id: number): Promise<Promotion> {
     const promotion = await this.promotionRepository.findOne({
@@ -71,11 +78,33 @@ export class PromotionService {
     return promotion;
   }
 
-  async update(id: number, updatePromotionDto: UpdatePromotionDto): Promise<Promotion> {
+  async update(id: number, updatePromotionDto: UpdatePromotionDto, file?: Express.Multer.File): Promise<Promotion> {
     const promotion = await this.findById(id);
+  
+    // Eski faylni o‘chirish va yangi faylni saqlash
+    if (file) {
+      const uniqueFileName = `${uuidv4()}-${file.originalname}`;
+      const uploadPath = path.join(__dirname, '..', '..', 'uploads', uniqueFileName);
+  
+      // Agar eski banner mavjud bo‘lsa, uni o‘chirib tashlaymiz
+      if (promotion.banner) {
+        const oldFilePath = path.join(__dirname, '..', '..', 'uploads', promotion.banner);
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+      }
+  
+      // Yangi faylni yuklaymiz
+      fs.writeFileSync(uploadPath, file.buffer);
+      promotion.banner = uniqueFileName;
+    }
+  
+    // DTO dan ma'lumotlarni o‘zgartirish
     Object.assign(promotion, updatePromotionDto);
     return await this.promotionRepository.save(promotion);
   }
+  
+  
 
   async delete(id: number): Promise<void> {
     const result = await this.promotionRepository.delete(id);

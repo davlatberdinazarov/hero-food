@@ -29,6 +29,7 @@ export class PromotionController {
       foodEstablishmentId ? +foodEstablishmentId : undefined,
     );
   }
+  
 
   @Get(':id')
   async findById(@Param('id') id: number) {
@@ -38,9 +39,15 @@ export class PromotionController {
   @Put('update/:id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.SUPERADMIN)
-  async update(@Param('id') id: number, @Body() updatePromotionDto: UpdatePromotionDto) {
-    return await this.promotionService.update(id, updatePromotionDto);
-  } 
+  @UseInterceptors(FileInterceptor('banner')) // Fayl yuklash uchun interceptor qo‘shildi
+  async update(
+    @Param('id') id: number,
+    @Body() updatePromotionDto: UpdatePromotionDto,
+    @UploadedFile() file?: Express.Multer.File
+  ) {
+    return await this.promotionService.update(id, updatePromotionDto, file);
+  }
+  
 
   @Delete('delete/:id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)

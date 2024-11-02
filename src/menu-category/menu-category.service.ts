@@ -46,6 +46,14 @@ export class MenuCategoryService {
     return await this.menuCategoryRepository.find({ where: whereConditions, relations: ['foodEstablishment'] });
   }
 
+  async findByEstablishment(establishmentId: number): Promise<MenuCategory[]> {
+    const establishment = await this.foodEstablishmentRepository.findOne({ where: { id: establishmentId } });
+    if (!establishment) throw new NotFoundException('Food Establishment not found');
+    
+    return this.menuCategoryRepository.find({ where: { foodEstablishment: establishment } });
+  }
+
+
   async findById(id: number): Promise<MenuCategory> {
     const category = await this.menuCategoryRepository.findOne({
       where: { id },

@@ -47,6 +47,19 @@ export class FoodService {
     });
   }
 
+  async findByCategory(categoryId: number): Promise<Food[]> {
+    const foods = await this.foodRepository.find({
+      where: { menuCategory: { id: categoryId } },
+      relations: ['menuCategory', 'foodEstablishment'],
+    });
+
+    if (!foods.length) {
+      throw new NotFoundException(`No foods found for category ID ${categoryId}`);
+    }
+
+    return foods;
+  }
+
   async findOne(id: number): Promise<Food> {
     const food = await this.foodRepository.findOne({
       where: { id },

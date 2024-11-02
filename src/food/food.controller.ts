@@ -23,10 +23,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { UserRole } from 'src/users/entities/user.entity';
+import { MenuCategoryService } from '../menu-category/menu-category.service';
 
 @Controller('foods')
 export class FoodController {
-  constructor(private readonly foodService: FoodService) {}
+  constructor(
+    private readonly foodService: FoodService,
+    private readonly menuCategoryService: MenuCategoryService, // Injecting MenuCategoryService
+  ) {}
 
   @Post('create')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -92,5 +96,17 @@ export class FoodController {
   @Roles(UserRole.SUPERADMIN)
   async remove(@Param('id', ParseIntPipe) id: number) {
     return await this.foodService.remove(id);
+  }
+
+  @Get('by-category/:categoryId')
+  async findByCategory(@Param('categoryId', ParseIntPipe) categoryId: number) {
+    return await this.foodService.findByCategory(categoryId);
+  }
+
+
+  // New method to get categories by establishment ID
+  @Get('categories/by-establishment/:id')
+  async getCategoriesByEstablishment(@Param('id', ParseIntPipe) id: number) {
+    return await this.menuCategoryService.findByEstablishment(id);
   }
 }

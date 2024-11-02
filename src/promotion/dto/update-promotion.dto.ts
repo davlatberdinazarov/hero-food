@@ -1,4 +1,29 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePromotionDto } from './create-promotion.dto';
+import { IsOptional, IsString, IsNumber, Min, Max, IsDate } from 'class-validator';
 
-export class UpdatePromotionDto extends PartialType(CreatePromotionDto) {}
+export class UpdatePromotionDto {
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  discountPercentage?: number;
+
+  @IsOptional()
+  @IsDate()
+  startDate?: Date;
+
+  @IsOptional()
+  @IsDate()
+  endDate?: Date;
+
+  @IsOptional()
+  @IsString()
+  banner?: string;
+}

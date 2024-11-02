@@ -25,6 +25,11 @@ export class MenuCategoryController {
     return await this.menuCategoryService.findAll(foodEstablishmentId ? +foodEstablishmentId : undefined);
   }
 
+  @Get('by-establishment/:foodEstablishmentId')
+  async findByFoodEstablishment(@Param('foodEstablishmentId') foodEstablishmentId: number) {
+    return await this.menuCategoryService.findAll(foodEstablishmentId);
+  }
+
   @Get(':id')
   async findById(@Param('id') id: number) {
     return await this.menuCategoryService.findById(id);
