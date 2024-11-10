@@ -1,5 +1,5 @@
 // src/category/dto/create-category.dto.ts
-import {IsString, IsEnum } from 'class-validator';
+import {IsString, IsEnum, IsOptional } from 'class-validator';
 
 // src/category/luxury-rate.enum.ts
 export enum LuxuryRate {
@@ -16,4 +16,8 @@ export class CreateCategoryDto {
 
   @IsEnum(LuxuryRate, { message: 'Luxury rate must be between 1 and 5.' })
   luxuryRate: LuxuryRate;
+
+  @IsOptional()
+  @IsString()
+  image?: string;  // image maydonini qo'shdik
 }

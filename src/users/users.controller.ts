@@ -28,6 +28,13 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Get('all')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.SUPERADMIN)
+  async findAll() {
+    return this.usersService.findAll();
+  }
+
   @Patch('update-phone-password')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async updatePhoneAndPassword(

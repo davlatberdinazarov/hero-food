@@ -1,5 +1,18 @@
 // src/promotion/promotion.controller.ts
-import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Put,
+  Delete,
+  UseGuards,
+  Query,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+} from '@nestjs/common';
 import { PromotionService } from './promotion.service';
 import { CreatePromotionDto } from './dto/create-promotion.dto';
 import { UpdatePromotionDto } from './dto/update-promotion.dto';
@@ -17,24 +30,27 @@ export class PromotionController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.SUPERADMIN)
   @UseInterceptors(FileInterceptor('banner')) // Specify the field name for the file
-  async create(@Body() createPromotionDto: CreatePromotionDto, @UploadedFile() file: Express.Multer.File) {
+  async create(
+    @Body() createPromotionDto: CreatePromotionDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
     return await this.promotionService.create(createPromotionDto, file);
   }
 
   @Get('all')
-  async findAll(
-    @Query('foodEstablishmentId') foodEstablishmentId?: number,
-  ) {
+  async findAll(@Query('foodEstablishmentId') foodEstablishmentId?: number) {
     return await this.promotionService.findAll(
       foodEstablishmentId ? +foodEstablishmentId : undefined,
     );
   }
-  
 
   @Get(':id')
   async findById(@Param('id') id: number) {
     return await this.promotionService.findById(id);
   }
+
+  // src/promotion/promotion.controller.ts
+// promotion.controller.ts
 
   @Put('update/:id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -43,11 +59,10 @@ export class PromotionController {
   async update(
     @Param('id') id: number,
     @Body() updatePromotionDto: UpdatePromotionDto,
-    @UploadedFile() file?: Express.Multer.File
+    @UploadedFile() file?: Express.Multer.File,
   ) {
     return await this.promotionService.update(id, updatePromotionDto, file);
   }
-  
 
   @Delete('delete/:id')
   @UseGuards(AuthGuard('jwt'), RolesGuard)

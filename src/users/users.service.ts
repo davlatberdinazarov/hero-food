@@ -30,7 +30,6 @@ export class UsersService implements OnModuleInit {
         role: UserRole.SUPERADMIN,
       });
       await this.userRepository.save(superAdmin);
-      console.log('Super Admin created');
     }
   }
 
@@ -55,12 +54,17 @@ export class UsersService implements OnModuleInit {
     return await this.userRepository.save(newUser);
   }
 
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find({
+      where: { role: UserRole.USER },
+    });
+  }  
+
   // Telefon raqam orqali foydalanuvchini topish
   async findOneByPhone(phone: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { phone } });
   }
 
-  
   // Foydalanuvchining telefon raqami va parolini yangilash
   async updatePhoneAndPassword(userId: number, phone: string, password: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id: userId } });

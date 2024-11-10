@@ -103,7 +103,6 @@ export class FoodController {
     return await this.foodService.findByCategory(categoryId);
   }
 
-
   // New method to get categories by establishment ID
   @Get('categories/by-establishment/:id')
   async getCategoriesByEstablishment(@Param('id', ParseIntPipe) id: number) {

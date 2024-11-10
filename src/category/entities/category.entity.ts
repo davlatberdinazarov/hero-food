@@ -18,6 +18,9 @@ export class Category {
   })
   luxuryRate: LuxuryRate;
 
+  @Column({ nullable: true })
+  image: string;  // yangi image ustuni
+
   @OneToMany(() => FoodEstablishment, (foodEstablishment) => foodEstablishment.category)
   foodEstablishments: FoodEstablishment[];
 }

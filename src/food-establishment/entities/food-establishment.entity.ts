@@ -7,6 +7,7 @@ import { Promotion } from 'src/promotion/entities/promotion.entity';
 import { MenuCategory } from 'src/menu-category/entities/menu-category.entity';
 import { Food } from 'src/food/entities/food.entity';
 import { Rating } from 'src/rating/entities/rating.entity';
+import { EstablishmentDetail } from 'src/establishment-detail/entities/establishment-detail.entity';
 
 export enum SizeOfEstablishment {
   SMALL = 'small',
@@ -37,6 +38,12 @@ export class FoodEstablishment {
   @Column()
   phoneNumber: string;
 
+  @Column({nullable: true })
+  instagram: string;
+
+  @Column({nullable: true })
+  telegram: string;
+
   @Column({
     type: 'enum',
     enum: SizeOfEstablishment,
@@ -57,6 +64,9 @@ export class FoodEstablishment {
 
   @OneToMany(() => Promotion, (promotion) => promotion.foodEstablishment)
   promotions: Promotion[]; // `Promotion` bilan bog'lanish
+
+  @OneToMany(() => EstablishmentDetail, (establishmentDetail) => establishmentDetail.foodEstablishment)
+  establishmentDetails: EstablishmentDetail[];
 
   @OneToMany(() => MenuCategory, (menuCategories) => menuCategories.foodEstablishment)
   menuCategories: MenuCategory[]; // `Promotion` bilan bog'lanish

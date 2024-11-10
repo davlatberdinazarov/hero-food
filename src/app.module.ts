@@ -16,6 +16,7 @@ import { ProfileModule } from './profile/profile.module';
 import { MenuCategoryModule } from './menu-category/menu-category.module';
 import { FoodModule } from './food/food.module';
 import { RatingModule } from './rating/rating.module';
+import { EstablishmentDetailModule } from './establishment-detail/establishment-detail.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { RatingModule } from './rating/rating.module';
     MenuCategoryModule,
     FoodModule,
     RatingModule,
+    EstablishmentDetailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

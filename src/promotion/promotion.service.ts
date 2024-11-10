@@ -78,6 +78,10 @@ export class PromotionService {
     return promotion;
   }
 
+  // src/promotion/promotion.service.ts
+// promotion.service.ts
+
+
   async update(id: number, updatePromotionDto: UpdatePromotionDto, file?: Express.Multer.File): Promise<Promotion> {
     const promotion = await this.findById(id);
   

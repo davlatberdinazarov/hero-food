@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString, IsEnum, IsOptional } from 'class-validator';
 import { SizeOfEstablishment } from '../entities/food-establishment.entity';
+import { Optional } from '@nestjs/common';
 
 export class CreateFoodEstablishmentDto {
   @IsNotEmpty()
@@ -20,6 +21,12 @@ export class CreateFoodEstablishmentDto {
 
   @IsNotEmpty()
   phoneNumber: string;
+
+  @Optional()
+  instagram: string;
+
+  @Optional()
+  telegram: string;
 
   @IsNotEmpty()
   @IsEnum(SizeOfEstablishment)
