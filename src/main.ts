@@ -14,6 +14,6 @@ async function bootstrap() {
   app.enableCors();
 
   // Ilovani localhost:8181 portida ishga tushirish
-  await app.listen(8181);
+  await app.listen(3000);
 }
 bootstrap();
