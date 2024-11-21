@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15
+    container_name: hero_food_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: hero-food
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - hero_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hero_food_app
+    environment:
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: admin
+      DB_NAME: hero-food
+      JWT_SECRET: mysecretkey
+      # Add TypeORM specific settings
+      TYPEORM_CONNECTION_LIMIT: 10
+      TYPEORM_QUERY_TIMEOUT: 5000
+    ports:
+      - "8181:3000"
+    depends_on:
+      database:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 256M
+    networks:
+      - hero_network
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
+networks:
+  hero_network:
