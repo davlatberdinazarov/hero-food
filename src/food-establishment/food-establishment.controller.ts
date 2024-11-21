@@ -22,6 +22,7 @@ import { UserRole } from 'src/users/entities/user.entity';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { existsSync, mkdirSync } from 'fs';
 
 @Controller('food-establishments')
 export class FoodEstablishmentController {
@@ -35,7 +36,17 @@ export class FoodEstablishmentController {
   @UseInterceptors(
     FileInterceptor('banner', {
       storage: diskStorage({
-        destination: './uploads/banners',
+        destination: (req, file, cb) => {
+          const uploadPath = './uploads/banners';
+
+          // Papkani tekshirish va yaratish
+          if (!existsSync(uploadPath)) {
+            mkdirSync(uploadPath, { recursive: true });
+            console.log(`Upload directory created at ${uploadPath}`);
+          }
+
+          cb(null, uploadPath);
+        },
         filename: (req, file, cb) => {
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -48,12 +59,16 @@ export class FoodEstablishmentController {
     @Body() createFoodEstablishmentDto: CreateFoodEstablishmentDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    // Faylning URL manzilini yaratish
     const bannerUrl = file ? `/uploads/banners/${file.filename}` : null;
+
+    // DTO ga banner URL ni qo'shish va saqlash
     return await this.foodEstablishmentService.create({
       ...createFoodEstablishmentDto,
       banner: bannerUrl,
     });
   }
+
 
   @Get('all')
   async findAll(

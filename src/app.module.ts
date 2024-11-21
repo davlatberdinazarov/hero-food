@@ -38,6 +38,7 @@ import { EstablishmentDetailModule } from './establishment-detail/establishment-
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'), // uploads papkasiga yo‘l
       serveRoot: '/uploads', // URL orqali kirish
+      exclude: ['*/index.html'], // HTML fayllar talab qilinmaydi
     }),
     UsersModule,
     AuthModule,

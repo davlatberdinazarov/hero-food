@@ -1,21 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Region } from './region.entity';
 import { RegionName } from './region-name.enum';
 
 @Injectable()
-export class RegionService {
+export class RegionService implements OnApplicationBootstrap {
   constructor(
     @InjectRepository(Region)
     private readonly regionRepository: Repository<Region>,
   ) {}
 
-// RegionService ichida
-async findAll(): Promise<Region[]> {
-  return await this.regionRepository.find();
-}
-
+  async findAll(): Promise<Region[]> {
+    return await this.regionRepository.find();
+  }
 
   async create(regionData: { name: RegionName }): Promise<Region> {
     const region = this.regionRepository.create(regionData);
@@ -47,5 +45,10 @@ async findAll(): Promise<Region[]> {
         await this.regionRepository.save(region);
       }
     }
+  }
+
+  // Loyiha ishga tushganda avtomatik chaqiriladi
+  async onApplicationBootstrap() {
+    await this.seedRegions();
   }
 }
