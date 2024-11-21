@@ -13,7 +13,11 @@ async function bootstrap() {
      // CORS ni yoqish
   app.enableCors();
 
-  // Ilovani localhost:8181 portida ishga tushirish
-  await app.listen(8181);
+ // .env fayldan PORT o‘zgaruvchisini o‘qib olish
+ const PORT = process.env.PORT || 3000; // Agar PORT ko‘rsatilmagan bo‘lsa, 3000 port ishlatiladi.
+
+ // Ilovani belgilangan portda ishga tushirish
+ await app.listen(PORT);
+ console.log(`Application is running on: http://localhost:${PORT}`);
 }
 bootstrap();
